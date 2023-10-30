@@ -80,7 +80,7 @@ if __name__ == '__main__':
 
     # 第二步，创建一个handler，用于写入日志文件
     rq = time.strftime('%Y%m%d', time.localtime(time.time()))
-    log_path = os.getcwd() + '/Logs/'
+    log_path = BASE_DIR + '/Logs/'
     log_name = log_path + rq + '.log'
     logfile = log_name
     fh = logging.FileHandler(logfile,encoding = 'utf-8')  # 指定utf-8格式编码，避免输出的日志文本乱码
