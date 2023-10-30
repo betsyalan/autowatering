@@ -58,7 +58,7 @@ if __name__ == '__main__':
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
     # 读取配置文件
     cf = configparser.ConfigParser()
-    cfg.read(os.path.join(BASE_DIR ,'config.ini'))
+    cf.read(os.path.join(BASE_DIR ,'config.ini'))
     #cf.read('config.ini')
     #播放时间
     starttime1= cf.get('config', 'starttime1')
