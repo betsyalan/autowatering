@@ -54,9 +54,12 @@ def autowater():
 
 
 if __name__ == '__main__':
+    # 2023.10.30 获取当前目录，修正获取config.ini路径不对的问题
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
     # 读取配置文件
     cf = configparser.ConfigParser()
-    cf.read('config.ini')
+    cfg.read(os.path.join(BASE_DIR ,'config.ini'))
+    #cf.read('config.ini')
     #播放时间
     starttime1= cf.get('config', 'starttime1')
     #自动时间
