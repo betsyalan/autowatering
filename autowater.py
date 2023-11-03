@@ -48,21 +48,20 @@ def autowater():
             #计算浇水时间
             #playtimesec = float(playtime) + float(startsec)
             #2023 11.3 增加判断是否低电平触发
-            #高电平
-            if bLowtrig == 0:
-                GPIO.output(pin, GPIO.HIGH)    
-                logger.debug("start...")
-                time.sleep(playtime)    
-                GPIO.output(pin, GPIO.LOW)
-                logger.debug("end time:%f"%playtime)
-            # 低电平
-            elif bLowtrig == 1:
+            #低电平
+            if bLowtrig == 1:
                 GPIO.output(pin, GPIO.LOW)    
                 logger.debug("start...")
                 time.sleep(playtime)    
                 GPIO.output(pin, GPIO.HIGH)
                 logger.debug("end time:%f"%playtime)
-
+            else:#高电平
+                GPIO.output(pin, GPIO.HIGH)    
+                logger.debug("start...")
+                time.sleep(playtime)    
+                GPIO.output(pin, GPIO.LOW)
+                logger.debug("end time:%f"%playtime)
+           
         if curhour != int(starttime1) and curhour != int(starttime2):
             bHasStart = False
 
@@ -89,13 +88,12 @@ if __name__ == '__main__':
     GPIO.setmode(GPIO.BOARD)    
     # 输出模式    
     GPIO.setup(pin, GPIO.OUT)    
-    #2023 11.3 增加判断是否低电平触发
-    #高电平
-    if bLowtrig == 0:    
-        GPIO.output(pin, GPIO.LOW)        
+    #2023 11.3 增加判断是否低电平触发       
     # 低电平
-    elif bLowtrig == 1:
+    if bLowtrig == 1:
         GPIO.output(pin, GPIO.HIGH)   
+    else:#高电平
+        GPIO.output(pin, GPIO.LOW)    
 
     logger.setLevel(logging.DEBUG)  # Log等级总开关
     # 创建一个handler，用于输出到控制台
