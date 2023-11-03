@@ -36,7 +36,7 @@ def autowater():
         #pin num
         pin =int(cf.get('config', 'pinnum'))
         # 2023.11.3 增加配置，是否低电平触发
-        bLowtrig=cf.get('config', 'lowtrig')
+        bLowtrig=int(cf.get('config', 'lowtrig'))
         #获取时间
         curhour=int(datetime.datetime.now().hour)    
         #logger.debug("+++curtime:%d,starttime:%d,%d,playtime:%d" % (curhour,starttime1,starttime2,playtime))
@@ -56,7 +56,7 @@ def autowater():
                 GPIO.output(pin, GPIO.LOW)
                 logger.debug("end time:%f"%playtime)
             # 低电平
-            elif bLowtrig ==1:
+            elif bLowtrig == 1:
                 GPIO.output(pin, GPIO.LOW)    
                 logger.debug("start...")
                 time.sleep(playtime)    
@@ -83,7 +83,7 @@ if __name__ == '__main__':
     #pin num
     pin =cf.get('config', 'pinnum')
     # 2023.11.3 增加配置，是否低电平触发
-    bLowtrig=cf.get('config', 'lowtrig')
+    bLowtrig=int(cf.get('config', 'lowtrig'))
     # GPIO设置
     # BOARD编号方式，基于插座引脚编号    
     GPIO.setmode(GPIO.BOARD)    
@@ -94,7 +94,7 @@ if __name__ == '__main__':
     if bLowtrig == 0:    
         GPIO.output(pin, GPIO.LOW)        
     # 低电平
-    elif bLowtrig ==1:
+    elif bLowtrig == 1:
         GPIO.output(pin, GPIO.HIGH)   
 
     logger.setLevel(logging.DEBUG)  # Log等级总开关
