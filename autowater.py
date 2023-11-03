@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*- 
 # 通过config.ini文件配置开始时间和浇水时间，可以配置两个开始时间
 # 可以配置引脚定义，引脚为物理引脚，靠左为单数，靠外为偶数   
+# lowtrig =1 为低电平触发 =0 为高电平触发
 import RPi.GPIO as GPIO    
 import time    
 import os
@@ -23,7 +24,10 @@ def autowater():
         #2019.11.1 随时更新配置
         # 读取配置文件
         cf = configparser.ConfigParser()
-        cf.read('config.ini')
+        # 2023.11.1 
+        BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+        cf.read(os.path.join(BASE_DIR ,'config.ini'))
+        #cf.read('config.ini')
         #开始时间
         starttime1= int(cf.get('config', 'starttime1'))
         #自动时间
@@ -31,6 +35,8 @@ def autowater():
         playtime= int(cf.get('config', 'palytime'))
         #pin num
         pin =int(cf.get('config', 'pinnum'))
+        # 2023.11.3 增加配置，是否低电平触发
+        bLowtrig=cf.get('config', 'lowtrig')
         #获取时间
         curhour=int(datetime.datetime.now().hour)    
         #logger.debug("+++curtime:%d,starttime:%d,%d,playtime:%d" % (curhour,starttime1,starttime2,playtime))
@@ -41,11 +47,21 @@ def autowater():
             bHasStart = True
             #计算浇水时间
             #playtimesec = float(playtime) + float(startsec)
-            GPIO.output(pin, GPIO.HIGH)    
-            logger.debug("start...")
-            time.sleep(playtime)    
-            GPIO.output(pin, GPIO.LOW)
-            logger.debug("end time:%f"%playtime)
+            #2023 11.3 增加判断是否低电平触发
+            #高电平
+            if bLowtrig == 0:
+                GPIO.output(pin, GPIO.HIGH)    
+                logger.debug("start...")
+                time.sleep(playtime)    
+                GPIO.output(pin, GPIO.LOW)
+                logger.debug("end time:%f"%playtime)
+            # 低电平
+            elif bLowtrig ==1:
+                GPIO.output(pin, GPIO.LOW)    
+                logger.debug("start...")
+                time.sleep(playtime)    
+                GPIO.output(pin, GPIO.HIGH)
+                logger.debug("end time:%f"%playtime)
 
         if curhour != int(starttime1) and curhour != int(starttime2):
             bHasStart = False
@@ -66,12 +82,20 @@ if __name__ == '__main__':
     starttime2= cf.get('config', 'starttime2')
     #pin num
     pin =cf.get('config', 'pinnum')
-
+    # 2023.11.3 增加配置，是否低电平触发
+    bLowtrig=cf.get('config', 'lowtrig')
     # GPIO设置
     # BOARD编号方式，基于插座引脚编号    
     GPIO.setmode(GPIO.BOARD)    
     # 输出模式    
     GPIO.setup(int(pin), GPIO.OUT)    
+    #2023 11.3 增加判断是否低电平触发
+    #高电平
+    if bLowtrig == 0:    
+        GPIO.output(pin, GPIO.LOW)        
+    # 低电平
+    elif bLowtrig ==1:
+        GPIO.output(pin, GPIO.HIGH)   
 
     logger.setLevel(logging.DEBUG)  # Log等级总开关
     # 创建一个handler，用于输出到控制台
