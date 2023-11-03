@@ -81,14 +81,14 @@ if __name__ == '__main__':
     #自动时间
     starttime2= cf.get('config', 'starttime2')
     #pin num
-    pin =cf.get('config', 'pinnum')
+    pin =int(cf.get('config', 'pinnum'))
     # 2023.11.3 增加配置，是否低电平触发
     bLowtrig=int(cf.get('config', 'lowtrig'))
     # GPIO设置
     # BOARD编号方式，基于插座引脚编号    
     GPIO.setmode(GPIO.BOARD)    
     # 输出模式    
-    GPIO.setup(int(pin), GPIO.OUT)    
+    GPIO.setup(pin, GPIO.OUT)    
     #2023 11.3 增加判断是否低电平触发
     #高电平
     if bLowtrig == 0:    
