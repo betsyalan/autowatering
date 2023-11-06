@@ -43,7 +43,7 @@ def autowater():
         #获取当前时间的时间戳
         #startsec = time.time()
         logger.debug(f'{bHasStart}')
-        logger.debug("time:%d,%d,%d"%curhour,starttime1,starttime2)
+        logger.debug("time:%d,%d,%d"%(curhour,starttime1,starttime2))
         if bHasStart == False and (curhour == starttime1 or curhour == starttime2):
             bHasStart = True
             #计算浇水时间
