@@ -11,11 +11,13 @@ import configparser
 #时间
 import datetime
 #log
-import logging
-import logging.handlers
+#import logging
+#import logging.handlers
+#2023.11
+import log_helper
 
 # 第一步，创建一个logger
-logger = logging.getLogger()
+#logger = logging.getLogger()
 
 def autowater():
     bHasStart = False
@@ -52,17 +54,17 @@ def autowater():
             #低电平
             if bLowtrig == 1:
                 GPIO.output(pin, GPIO.LOW)    
-                logger.debug("start...")
+                log_helper.print_info("start...")
                 #logger.debug(f'{bHasStart}')
                 time.sleep(playtime)    
                 GPIO.output(pin, GPIO.HIGH)
-                logger.debug("end time:%f"%playtime)
+                log_helper.print_info("end time:%f"%playtime)
             else:#高电平
                 GPIO.output(pin, GPIO.HIGH)    
-                logger.debug("start...")
+                log_helper.print_info("start...")
                 time.sleep(playtime)    
                 GPIO.output(pin, GPIO.LOW)
-                logger.debug("end time:%f"%playtime)
+                log_helper.print_info("end time:%f"%playtime)
         
         if (curhour != int(starttime1)) and (curhour != int(starttime2)):
             bHasStart = False
@@ -97,29 +99,30 @@ if __name__ == '__main__':
     else:#高电平
         GPIO.output(pin, GPIO.LOW)    
 
-    logger.setLevel(logging.DEBUG)  # Log等级总开关
+    #logger.setLevel(logging.DEBUG)  # Log等级总开关
     # 创建一个handler，用于输出到控制台
-    ch = logging.StreamHandler()
-    ch.setLevel(logging.DEBUG)  # 输出到console的log等级的开关
+    #ch = logging.StreamHandler()
+    #ch.setLevel(logging.DEBUG)  # 输出到console的log等级的开关
 
     # 第二步，创建一个handler，用于写入日志文件
-    rq = time.strftime('%Y%m%d', time.localtime(time.time()))
-    log_path = BASE_DIR + '/Logs/'
-    log_name = log_path + rq + '.log'
-    logfile = log_name
-    fh = logging.FileHandler(logfile,encoding = 'utf-8')  # 指定utf-8格式编码，避免输出的日志文本乱码
-    fh.setLevel(logging.DEBUG)  # 输出到file的log等级的开关
+    #rq = time.strftime('%Y%m%d', time.localtime(time.time()))
+    #log_path = BASE_DIR + '/Logs/'
+    #log_name = log_path + rq + '.log'
+    #logfile = log_name
+    #fh = logging.FileHandler(logfile,encoding = 'utf-8')  # 指定utf-8格式编码，避免输出的日志文本乱码
+    #fh.setLevel(logging.DEBUG)  # 输出到file的log等级的开关
 
     # 第三步，定义handler的输出格式
-    formatter = logging.Formatter("%(asctime)s: %(message)s")
-    fh.setFormatter(formatter)
+    #formatter = logging.Formatter("%(asctime)s: %(message)s")
+    #fh.setFormatter(formatter)
 
     # 控制台
-    ch.setFormatter(formatter)
-    logger.addHandler(ch)
+    #ch.setFormatter(formatter)
+    #logger.addHandler(ch)
 
     # 第四步，将logger添加到handler里面
-    logger.addHandler(fh)
+    #logger.addHandler(fh)
 
-    logger.debug("程序启动。")
+    #logger.debug("程序启动。")
+    log_helper.print_info("程序启动。")
     autowater()
