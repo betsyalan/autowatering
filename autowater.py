@@ -63,8 +63,8 @@ def autowater():
                 time.sleep(playtime)    
                 GPIO.output(pin, GPIO.LOW)
                 logger.debug("end time:%f"%playtime)
-           
-        if curhour != int(starttime1) and curhour != int(starttime2):
+        
+        if (curhour != int(starttime1)) and (curhour != int(starttime2)):
             bHasStart = False
 
         time.sleep(200)
