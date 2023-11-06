@@ -43,6 +43,7 @@ def autowater():
         #获取当前时间的时间戳
         #startsec = time.time()
         logger.debug(f'{bHasStart}')
+        logger.debug("time:%d,%d,%d"%curhour,starttime1,starttime2)
         if bHasStart == False and (curhour == starttime1 or curhour == starttime2):
             bHasStart = True
             #计算浇水时间
@@ -52,10 +53,10 @@ def autowater():
             if bLowtrig == 1:
                 GPIO.output(pin, GPIO.LOW)    
                 logger.debug("start...")
+                logger.debug(f'{bHasStart}')
                 time.sleep(playtime)    
                 GPIO.output(pin, GPIO.HIGH)
                 logger.debug("end time:%f"%playtime)
-                logger.debug(f'{bHasStart}')
             else:#高电平
                 GPIO.output(pin, GPIO.HIGH)    
                 logger.debug("start...")
@@ -66,7 +67,7 @@ def autowater():
         if curhour != int(starttime1) and curhour != int(starttime2):
             bHasStart = False
 
-        time.sleep(10)
+        time.sleep(200)
 
 
 if __name__ == '__main__':
